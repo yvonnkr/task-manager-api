@@ -65,7 +65,7 @@ router.get('/tasks', auth, async (req, res) => {
     //   match.completed = false;
     // }
   } catch (e) {
-    res.status(500).send('Server error');
+    res.status(400).send();
   }
 });
 
@@ -134,7 +134,7 @@ router.delete('/tasks/:id', auth, async (req, res) => {
 
     res.send(task);
   } catch (e) {
-    res.status(500).send(e.message);
+    res.status(400).send();
   }
 });
 

@@ -16,7 +16,9 @@ router.post('/users', async (req, res) => {
 
   try {
     await user.save();
-    sendWelcomeEmail(user.email, user.name);
+
+    //send email on registration  --disabled to stop emails
+    // sendWelcomeEmail(user.email, user.name);
 
     const token = await user.generateAuthToken();
 
@@ -131,7 +133,7 @@ router.patch('/users/me', auth, async (req, res) => {
     //   runValidators: true
     // });
   } catch (e) {
-    res.status(400).send(e.message);
+    res.status(400).send();
   }
 });
 
@@ -139,14 +141,16 @@ router.patch('/users/me', auth, async (req, res) => {
 //delete user
 router.delete('/users/me', auth, async (req, res) => {
   try {
+    await req.user.remove();
+    res.send(req.user);
+
     // const user = await User.findByIdAndDelete(req.user._id);
     // if (!user) return res.status(404).send('User already deleted.');
 
-    await req.user.remove();
-    sendCancelationEmail(req.user.email, req.user.name);
-    res.send(req.user);
+    //send email on cancelation  --disabled
+    // sendCancelationEmail(req.user.email, req.user.name);
   } catch (e) {
-    res.status(500).send(e.message);
+    res.status(401).send();
   }
 });
 
